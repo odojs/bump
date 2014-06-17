@@ -1,31 +1,37 @@
 
 # bump
-
-  Easily bump the version of all the different package.json equivalents.
+Easily bump the version of all the different package.json equivalents.
 
 ## Installation
-
-    $ npm install -g ianstormtaylor/bump
+    $ npm install -g tcoats/bump
 
 ## Usage
-
-    $ bump 0.4.1
-    
-        Version bumped to 0.4.1 in package.json and component.json.
-    
     $ bump patch
     
-        Version bumped to 0.4.2 in package.json and component.json.
+      patch'd
+      0.6.9 -> 0.6.10
+    
+      files updated
+      package.json
+      bower.json
     
     $ bump minor
     
-        Version bumped to 0.5.0 in package.json and component.json.
+      minor'd
+      0.6.9 -> 0.7.0
+    
+      files updated
+      package.json
+      bower.json
     
     $ bump major
     
-        Version bumped to 1.0.0 in package.json and component.json.
-
+      major'd
+      0.6.9 -> 1.0.0
+    
+      files updated
+      package.json
+      bower.json
 
 ## License
-
-  MIT
+MIT

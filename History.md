@@ -1,3 +1,11 @@
+1.0.0 - June 18, 2014
+---------------------
+* removed explicit version replacement
+* fixed major, minor, patch and prerelease shortcuts
+* moved code to coffeescript
+* added usage instructions
+* added additional error checking
+* nicer output
 
 0.3.0 - February 10, 2013
 -------------------------
