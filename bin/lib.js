@@ -21,19 +21,6 @@
     return console.log("\n   " + msg + "\n");
   };
 
-  if (process.argv.length !== 3) {
-    console.error("\n   Usage: " + 'bump'.blue + " type\n\n   Bump types:\n   \n     major         " + '1.2.3'.blue + " -> " + '2.0.0'.green + "\n     minor         " + '1.2.3'.blue + " -> " + '1.3.0'.green + "\n     patch         " + '1.2.3'.blue + " -> " + '1.2.4'.green + "\n     prerelease    " + '1.2.3'.blue + " -> " + '1.2.3-0'.green + "\n   ");
-    process.exit(1);
-  }
-
-  bumptype = process.argv[2];
-
-  bumptypes = ['major', 'minor', 'patch', 'prerelease'];
-
-  if (bumptypes.indexOf(bumptype) === -1) {
-    fatal("Expecting major, minor, patch or prerelease");
-  }
-
   packagemanagerfiles = ['package.json', 'component.json', 'bower.json'];
 
   sources = packagemanagerfiles.map(function(name) {
@@ -49,6 +36,32 @@
     source.file = require(source.path);
     return !source.file["private"] || (source.file.version != null);
   });
+
+  if (process.argv.length !== 3) {
+    console.error("\n   Usage: " + 'bump'.blue + " type\n\n   Bump types:\n   \n     major         " + '1.2.3'.blue + " -> " + '2.0.0'.green + "\n     minor         " + '1.2.3'.blue + " -> " + '1.3.0'.green + "\n     patch         " + '1.2.3'.blue + " -> " + '1.2.4'.green + "\n     prerelease    " + '1.2.3'.blue + " -> " + '1.2.3-0'.green + "\n   \n   Sources:\n   ");
+    if (sources.length === 0) {
+      console.error("Expecting\n" + (packagemanagerfiles.map(function(s) {
+        return s.blue;
+      }).join(' or\n   ')) + " in the current directory");
+    }
+    sources.forEach(function(source) {
+      if (source.file.version == null) {
+        return console.error("No version found in " + source.name.red);
+      } else {
+        return console.error("     " + source.name + " " + source.file.version.blue);
+      }
+    });
+    console.error();
+    process.exit(1);
+  }
+
+  bumptype = process.argv[2];
+
+  bumptypes = ['major', 'minor', 'patch', 'prerelease'];
+
+  if (bumptypes.indexOf(bumptype) === -1) {
+    fatal("Expecting major, minor, patch or prerelease");
+  }
 
   currentVersion = null;
 

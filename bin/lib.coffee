@@ -19,27 +19,6 @@ log = (msg) ->
   
   """
 
-if process.argv.length isnt 3
-  console.error """
-  
-     Usage: #{'bump'.blue} type
-  
-     Bump types:
-     
-       major         #{'1.2.3'.blue} -> #{'2.0.0'.green}
-       minor         #{'1.2.3'.blue} -> #{'1.3.0'.green}
-       patch         #{'1.2.3'.blue} -> #{'1.2.4'.green}
-       prerelease    #{'1.2.3'.blue} -> #{'1.2.3-0'.green}
-     
-  """
-  process.exit 1
-
-# Bump the version based on semver
-bumptype = process.argv[2]
-bumptypes = ['major', 'minor', 'patch', 'prerelease']
-if bumptypes.indexOf(bumptype) is -1
-  fatal "Expecting major, minor, patch or prerelease"
-
 packagemanagerfiles = [
   'package.json'
   'component.json'
@@ -61,6 +40,40 @@ sources = sources
   .filter (source) ->
     source.file = require source.path
     !source.file.private or source.file.version?
+
+if process.argv.length isnt 3
+  console.error """
+  
+     Usage: #{'bump'.blue} type
+  
+     Bump types:
+     
+       major         #{'1.2.3'.blue} -> #{'2.0.0'.green}
+       minor         #{'1.2.3'.blue} -> #{'1.3.0'.green}
+       patch         #{'1.2.3'.blue} -> #{'1.2.4'.green}
+       prerelease    #{'1.2.3'.blue} -> #{'1.2.3-0'.green}
+     
+     Sources:
+     
+  """
+  if sources.length is 0
+    console.error """
+         Expecting
+         #{packagemanagerfiles.map((s) -> s.blue).join(' or\n   ')} in the current directory
+    """
+  sources.forEach (source) ->
+    if !source.file.version?
+      console.error "No version found in #{source.name.red}"
+    else
+      console.error "     #{source.name} #{source.file.version.blue}"
+  console.error()
+  process.exit 1
+
+# Bump the version based on semver
+bumptype = process.argv[2]
+bumptypes = ['major', 'minor', 'patch', 'prerelease']
+if bumptypes.indexOf(bumptype) is -1
+  fatal "Expecting major, minor, patch or prerelease"
 
 currentVersion = null
 sources.forEach (source) ->
