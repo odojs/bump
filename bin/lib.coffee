@@ -1,4 +1,4 @@
-require('colors')
+require 'colors'
 exists = require('fs').existsSync
 resolve = require('path').resolve
 increment = require('semver').inc
@@ -57,10 +57,8 @@ if process.argv.length isnt 3
      
   """
   if sources.length is 0
-    console.error """
-         Expecting
-         #{packagemanagerfiles.map((s) -> s.blue).join(' or\n   ')} in the current directory
-    """
+    console.error '   Expecting'
+    console.error "     #{packagemanagerfiles.map((s) -> s.blue).join(' or\n     ')} in the current directory"
   sources.forEach (source) ->
     if !source.file.version?
       console.error "No version found in #{source.name.red}"
